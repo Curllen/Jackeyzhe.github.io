@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Jackeyzhe">
 <meta property="og:description" content="说起Git，相信大家都很熟悉了，毕竟作为程序猿，每天的业余时间除了吃饭睡觉就是逛一下全世界最大的开（tong）源（xing）代（jiao）码（you）网站GitHub了。在那里Git是每个人所要具备的最基本的技能。今天我们不聊Git的基本应用，来聊一聊Git的原理。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-19T14:53:21.982Z">
+<meta property="og:updated_time" content="2018-08-19T15:33:33.844Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊Git原理">
 <meta name="twitter:description" content="说起Git，相信大家都很熟悉了，毕竟作为程序猿，每天的业余时间除了吃饭睡觉就是逛一下全世界最大的开（tong）源（xing）代（jiao）码（you）网站GitHub了。在那里Git是每个人所要具备的最基本的技能。今天我们不聊Git的基本应用，来聊一聊Git的原理。">
@@ -362,9 +362,7 @@
       
         <p>说起Git，相信大家都很熟悉了，毕竟作为程序猿，每天的业余时间除了吃饭睡觉就是逛一下全世界最大的开（tong）源（xing）代（jiao）码（you）网站GitHub了。在那里Git是每个人所要具备的最基本的技能。今天我们不聊Git的基本应用，来聊一聊Git的原理。<a id="more"></a></p>
 <p>Git给自己的定义是一套内存寻址文件系统，当你在一个目录下执行git init命令时，会生成一个.git目录，它的目录结构是这样的：</p>
-<blockquote>
-<p>.git/<br>├── branches<br>├── config<br>├── description<br>├── HEAD<br>├── hooks<br>│   ├── applypatch-msg.sample<br>│   ├── commit-msg.sample<br>│   ├── post-update.sample<br>│   ├── pre-applypatch.sample<br>│   ├── pre-commit.sample<br>│   ├── prepare-commit-msg.sample<br>│   ├── pre-push.sample<br>│   ├── pre-rebase.sample<br>│   └── update.sample<br>├── info<br>│   └── exclude<br>├── objects<br>│   ├── info<br>│   └── pack<br>└── refs<br>    ├── heads<br>    └── tags</p>
-</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">.git/</span><br><span class="line">├── branches</span><br><span class="line">├── config</span><br><span class="line">├── description</span><br><span class="line">├── HEAD</span><br><span class="line">├── hooks</span><br><span class="line">│   ├── applypatch-msg.sample</span><br><span class="line">│   ├── commit-msg.sample</span><br><span class="line">│   ├── post-update.sample</span><br><span class="line">│   ├── pre-applypatch.sample</span><br><span class="line">│   ├── pre-commit.sample</span><br><span class="line">│   ├── prepare-commit-msg.sample</span><br><span class="line">│   ├── pre-push.sample</span><br><span class="line">│   ├── pre-rebase.sample</span><br><span class="line">│   └── update.sample</span><br><span class="line">├── info</span><br><span class="line">│   └── exclude</span><br><span class="line">├── objects</span><br><span class="line">│   ├── info</span><br><span class="line">│   └── pack</span><br><span class="line">└── refs</span><br><span class="line">    ├── heads</span><br><span class="line">    └── tags</span><br></pre></td></tr></table></figure>
 <p>其中branches目录已经不再使用，description文件仅供GitWeb程序使用，config文件保存了项目的配置。</p>
 <p>需要我们重点关注的是HEAD和index文件以及objects和refs目录。其中index中保存了暂存区的一些信息，这里不做过多介绍。</p>
 <h4 id="objects目录"><a href="#objects目录" class="headerlink" title="objects目录"></a>objects目录</h4><p>这个目录是用来存储Git对象的（包括tree对象、commit对象和blob对象），对于一个初始的Git仓库，objects目录下只有info和pack两个子目录，并没有常规文件。随着项目的进行，我们创建的文件，以及一些操作记录，都会作为Git对象被存储在这个目录下。</p>
@@ -372,9 +370,7 @@
 <p>接下来让我们一起看一下当我们进行一次提交时，Git具体做了哪些事情。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">'test content'</span>&gt;test.txt</span><br><span class="line">$ git add .</span><br></pre></td></tr></table></figure>
 <p>执行上述命令后，objects目录结构如下：</p>
-<blockquote>
-<p>.git/objects/<br>├── d6<br>│   └── 70460b4b4aece5915caf5c68d12f560a9fe3e4<br>├── info<br>└── pack</p>
-</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.git/objects/</span><br><span class="line">├── d6</span><br><span class="line">│   └── 70460b4b4aece5915caf5c68d12f560a9fe3e4</span><br><span class="line">├── info</span><br><span class="line">└── pack</span><br></pre></td></tr></table></figure>
 <p>这里多了一个文件夹，如上面所述，这个就是Git为我们创建的一个对象，我们可以使用底层命令来看一下这个对象的类型以及它存储的是什么。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git cat-file -t d670460b4b4aece5915caf5c68d12f560a9fe3e4</span><br><span class="line">blob</span><br><span class="line">$ git cat-file -p d670460b4b4aece5915caf5c68d12f560a9fe3e4</span><br><span class="line"><span class="built_in">test</span> content</span><br></pre></td></tr></table></figure>
 <p>可以看到，这是一个blob对象，存储内容就是我们刚刚创建的文件的内容。接下来继续执行提交操作。</p>
@@ -497,6 +493,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/08/20/volatile-vs-synchronized/" rel="prev" title="volatile vs synchronized">
+                volatile vs synchronized <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -578,7 +578,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -591,7 +591,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
