@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="git," />
+  <meta name="keywords" content="Java," />
 
 
 
@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="说起Git，相信大家都很熟悉了，毕竟作为程序猿，每天的业余时间除了吃饭睡觉就是逛一下全世界最大的开（tong）源（xing）代（jiao）码（you）网站GitHub了。在那里Git是每个人所要具备的最基本的技能。今天我们不聊Git的基本应用，来聊一聊Git的原理。">
-<meta name="keywords" content="git">
+<meta name="description" content="在实际项目中，我们常常需要把两个相似的对象相互转换，其目的是在对外提供数据时需要将一部分敏感数据（例如：密码、加密token等）隐藏起来。最普通的方法是，新建一个对象，将需要的值逐个set进去。如果有多组需要这样转换的对象，那么就需要做很多只是get/set这样无意义的工作。">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="聊聊Git原理">
-<meta property="og:url" content="https://jackeyzhe.github.io/2018/08/15/聊聊Git原理/index.html">
+<meta property="og:title" content="使用ModelMapper的一次踩坑经历">
+<meta property="og:url" content="https://jackeyzhe.github.io/2018/09/11/使用ModelMapper的一次踩坑经历/index.html">
 <meta property="og:site_name" content="Jackeyzhe">
-<meta property="og:description" content="说起Git，相信大家都很熟悉了，毕竟作为程序猿，每天的业余时间除了吃饭睡觉就是逛一下全世界最大的开（tong）源（xing）代（jiao）码（you）网站GitHub了。在那里Git是每个人所要具备的最基本的技能。今天我们不聊Git的基本应用，来聊一聊Git的原理。">
+<meta property="og:description" content="在实际项目中，我们常常需要把两个相似的对象相互转换，其目的是在对外提供数据时需要将一部分敏感数据（例如：密码、加密token等）隐藏起来。最普通的方法是，新建一个对象，将需要的值逐个set进去。如果有多组需要这样转换的对象，那么就需要做很多只是get/set这样无意义的工作。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-19T15:33:33.844Z">
+<meta property="og:image" content="https://res.cloudinary.com/dxydgihag/image/upload/v1536677296/Blog/ModelMapper/ModelMapper1.png">
+<meta property="og:image" content="https://res.cloudinary.com/dxydgihag/image/upload/v1536678691/Blog/ModelMapper/ModelMapper2.png">
+<meta property="og:updated_time" content="2018-09-11T16:12:26.473Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="聊聊Git原理">
-<meta name="twitter:description" content="说起Git，相信大家都很熟悉了，毕竟作为程序猿，每天的业余时间除了吃饭睡觉就是逛一下全世界最大的开（tong）源（xing）代（jiao）码（you）网站GitHub了。在那里Git是每个人所要具备的最基本的技能。今天我们不聊Git的基本应用，来聊一聊Git的原理。">
+<meta name="twitter:title" content="使用ModelMapper的一次踩坑经历">
+<meta name="twitter:description" content="在实际项目中，我们常常需要把两个相似的对象相互转换，其目的是在对外提供数据时需要将一部分敏感数据（例如：密码、加密token等）隐藏起来。最普通的方法是，新建一个对象，将需要的值逐个set进去。如果有多组需要这样转换的对象，那么就需要做很多只是get/set这样无意义的工作。">
+<meta name="twitter:image" content="https://res.cloudinary.com/dxydgihag/image/upload/v1536677296/Blog/ModelMapper/ModelMapper1.png">
 
 
 
@@ -120,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="https://jackeyzhe.github.io/2018/08/15/聊聊Git原理/"/>
+  <link rel="canonical" href="https://jackeyzhe.github.io/2018/09/11/使用ModelMapper的一次踩坑经历/"/>
 
 
 
 
 
-  <title>聊聊Git原理 | Jackeyzhe</title>
+  <title>使用ModelMapper的一次踩坑经历 | Jackeyzhe</title>
   
 
 
@@ -288,7 +291,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jackeyzhe.github.io/2018/08/15/聊聊Git原理/">
+    <link itemprop="mainEntityOfPage" href="https://jackeyzhe.github.io/2018/09/11/使用ModelMapper的一次踩坑经历/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jackey Wang">
@@ -305,7 +308,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">聊聊Git原理</h1>
+          <h1 class="post-title" itemprop="name headline">使用ModelMapper的一次踩坑经历</h1>
         
 
         <div class="post-meta">
@@ -317,8 +320,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T23:24:06+08:00">
-                2018-08-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-11T22:08:32+08:00">
+                2018-09-11
               </time>
             
 
@@ -360,47 +363,38 @@
       
 
       
-        <p>说起Git，相信大家都很熟悉了，毕竟作为程序猿，每天的业余时间除了吃饭睡觉就是逛一下全世界最大的开（tong）源（xing）代（jiao）码（you）网站GitHub了。在那里Git是每个人所要具备的最基本的技能。今天我们不聊Git的基本应用，来聊一聊Git的原理。<a id="more"></a></p>
-<p>Git给自己的定义是一套内存寻址文件系统，当你在一个目录下执行git init命令时，会生成一个.git目录，它的目录结构是这样的：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">.git/</span><br><span class="line">├── branches</span><br><span class="line">├── config</span><br><span class="line">├── description</span><br><span class="line">├── HEAD</span><br><span class="line">├── hooks</span><br><span class="line">│   ├── applypatch-msg.sample</span><br><span class="line">│   ├── commit-msg.sample</span><br><span class="line">│   ├── post-update.sample</span><br><span class="line">│   ├── pre-applypatch.sample</span><br><span class="line">│   ├── pre-commit.sample</span><br><span class="line">│   ├── prepare-commit-msg.sample</span><br><span class="line">│   ├── pre-push.sample</span><br><span class="line">│   ├── pre-rebase.sample</span><br><span class="line">│   └── update.sample</span><br><span class="line">├── info</span><br><span class="line">│   └── exclude</span><br><span class="line">├── objects</span><br><span class="line">│   ├── info</span><br><span class="line">│   └── pack</span><br><span class="line">└── refs</span><br><span class="line">    ├── heads</span><br><span class="line">    └── tags</span><br></pre></td></tr></table></figure>
-<p>其中branches目录已经不再使用，description文件仅供GitWeb程序使用，config文件保存了项目的配置。</p>
-<p>需要我们重点关注的是HEAD和index文件以及objects和refs目录。其中index中保存了暂存区的一些信息，这里不做过多介绍。</p>
-<h4 id="objects目录"><a href="#objects目录" class="headerlink" title="objects目录"></a>objects目录</h4><p>这个目录是用来存储Git对象的（包括tree对象、commit对象和blob对象），对于一个初始的Git仓库，objects目录下只有info和pack两个子目录，并没有常规文件。随着项目的进行，我们创建的文件，以及一些操作记录，都会作为Git对象被存储在这个目录下。</p>
-<p>在该目录下，所有对象都会生成一个文件，并且有对应的SHA-1校验和，Git会创建以校验和前两位为名称的子目录，并以剩下的38位为名称来保存文件。</p>
-<p>接下来让我们一起看一下当我们进行一次提交时，Git具体做了哪些事情。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">'test content'</span>&gt;test.txt</span><br><span class="line">$ git add .</span><br></pre></td></tr></table></figure>
-<p>执行上述命令后，objects目录结构如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.git/objects/</span><br><span class="line">├── d6</span><br><span class="line">│   └── 70460b4b4aece5915caf5c68d12f560a9fe3e4</span><br><span class="line">├── info</span><br><span class="line">└── pack</span><br></pre></td></tr></table></figure>
-<p>这里多了一个文件夹，如上面所述，这个就是Git为我们创建的一个对象，我们可以使用底层命令来看一下这个对象的类型以及它存储的是什么。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git cat-file -t d670460b4b4aece5915caf5c68d12f560a9fe3e4</span><br><span class="line">blob</span><br><span class="line">$ git cat-file -p d670460b4b4aece5915caf5c68d12f560a9fe3e4</span><br><span class="line"><span class="built_in">test</span> content</span><br></pre></td></tr></table></figure>
-<p>可以看到，这是一个blob对象，存储内容就是我们刚刚创建的文件的内容。接下来继续执行提交操作。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m <span class="string">'test message'</span></span><br><span class="line">[master (root-commit) 2b00dca] <span class="built_in">test</span> message</span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br><span class="line"> create mode 100644 test.txt</span><br><span class="line"> $ tree .git/objects/</span><br><span class="line">.git/objects/</span><br><span class="line">├── 2b</span><br><span class="line">│   └── 00dcae50af70bb5722033b3fe75281206c74da</span><br><span class="line">├── 80</span><br><span class="line">│   └── 865964295ae2f11d27383e5f9c0b58a8ef21da</span><br><span class="line">├── d6</span><br><span class="line">│   └── 70460b4b4aece5915caf5c68d12f560a9fe3e4</span><br><span class="line">├── info</span><br><span class="line">└── pack</span><br></pre></td></tr></table></figure>
-<p>此时objects目录下又多了两个对象。再用cat-file命令来查看一下这两个文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ git cat-file -t 2b00dcae50af70bb5722033b3fe75281206c74da</span><br><span class="line">commit</span><br><span class="line">$ git cat-file -p 2b00dcae50af70bb5722033b3fe75281206c74da</span><br><span class="line">tree 80865964295ae2f11d27383e5f9c0b58a8ef21da</span><br><span class="line">author jackeyzhe &lt;jackeyzhe59@163.com&gt; 1534670725 +0800</span><br><span class="line">committer jackeyzhe &lt;jackeyzhe59@163.com&gt; 1534670725 +0800</span><br><span class="line"></span><br><span class="line"><span class="built_in">test</span> message</span><br><span class="line">$ git cat-file -t 80865964295ae2f11d27383e5f9c0b58a8ef21da</span><br><span class="line">tree</span><br><span class="line">$ git cat-file -p 80865964295ae2f11d27383e5f9c0b58a8ef21da</span><br><span class="line">100644 blob d670460b4b4aece5915caf5c68d12f560a9fe3e4	test.txt</span><br></pre></td></tr></table></figure>
-<p>可以看到一个是commit对象，一个是tree对象。commit对象通常包括4部分内容：</p>
-<ul>
-<li>工作目录快照的Hash，即tree的值</li>
-<li>提交的说明信息</li>
-<li>提交者的信息</li>
-<li>父提交的Hash值</li>
-</ul>
-<p>由于我是第一次提交，所以这里没有父提交的Hash值。</p>
-<p>tree对象可以理解为UNIX文件系统中的目录，保存了工作目录的tree对象和blob对象的信息。接下来我们再来看一下Git是如何进行版本控制的。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'version1'</span>&gt;version.txt</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">'first version'</span></span><br><span class="line">[master 702193d] first version</span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br><span class="line"> create mode 100644 version.txt</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">'version2'</span>&gt;version.txt</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">'second version'</span></span><br><span class="line">[master 5333a75] second version</span><br><span class="line"> 1 file changed, 1 insertion(+), 1 deletion(-)</span><br><span class="line">$ tree .git/objects/</span><br><span class="line">.git/objects/</span><br><span class="line">├── 1f</span><br><span class="line">│   └── a5aab2a3cf025d06479b9eab9a7f66f60dbfc1</span><br><span class="line">├── 29</span><br><span class="line">│   └── 13bfa5cf9fb6f893bec60ac11d86129d56fcbe</span><br><span class="line">├── 2b</span><br><span class="line">│   └── 00dcae50af70bb5722033b3fe75281206c74da</span><br><span class="line">├── 53</span><br><span class="line">│   └── 33a759c4bdcdc6095b4caac19743d9445ca516</span><br><span class="line">├── 5b</span><br><span class="line">│   └── dcfc19f119febc749eef9a9551bc335cb965e2</span><br><span class="line">├── 70</span><br><span class="line">│   └── 2193d62ffd797155e4e21eede20897890da12a</span><br><span class="line">├── 80</span><br><span class="line">│   └── 865964295ae2f11d27383e5f9c0b58a8ef21da</span><br><span class="line">├── d6</span><br><span class="line">│   └── 70460b4b4aece5915caf5c68d12f560a9fe3e4</span><br><span class="line">├── df</span><br><span class="line">│   └── 7af2c382e49245443687973ceb711b2b74cb4a</span><br><span class="line">├── info</span><br><span class="line">└── pack</span><br><span class="line">$ git cat-file -p 1fa5aab2a3cf025d06479b9eab9a7f66f60dbfc1</span><br><span class="line">100644 blob d670460b4b4aece5915caf5c68d12f560a9fe3e4	test.txt</span><br><span class="line">100644 blob 5bdcfc19f119febc749eef9a9551bc335cb965e2	version.txt</span><br><span class="line">$ git cat-file -p 2913bfa5cf9fb6f893bec60ac11d86129d56fcbe</span><br><span class="line">100644 blob d670460b4b4aece5915caf5c68d12f560a9fe3e4	test.txt</span><br><span class="line">100644 blob df7af2c382e49245443687973ceb711b2b74cb4a	version.txt</span><br></pre></td></tr></table></figure>
-<p>Git将没有改变的文件的Hash值直接存入tree对象，对于有修改的文件，则会生成一个新的对象，将新的对象存入tree对象。我们再来看一下commit对象的信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ git cat-file -p 5333a759c4bdcdc6095b4caac19743d9445ca516</span><br><span class="line">tree 2913bfa5cf9fb6f893bec60ac11d86129d56fcbe</span><br><span class="line">parent 702193d62ffd797155e4e21eede20897890da12a</span><br><span class="line">author jackeyzhe &lt;jackeyzhe59@163.com&gt; 1534672270 +0800</span><br><span class="line">committer jackeyzhe &lt;jackeyzhe59@163.com&gt; 1534672270 +0800</span><br><span class="line"></span><br><span class="line">second version</span><br><span class="line">$ git cat-file -p 702193d62ffd797155e4e21eede20897890da12a</span><br><span class="line">tree 1fa5aab2a3cf025d06479b9eab9a7f66f60dbfc1</span><br><span class="line">parent 2b00dcae50af70bb5722033b3fe75281206c74da</span><br><span class="line">author jackeyzhe &lt;jackeyzhe59@163.com&gt; 1534672248 +0800</span><br><span class="line">committer jackeyzhe &lt;jackeyzhe59@163.com&gt; 1534672248 +0800</span><br><span class="line"></span><br><span class="line">first version</span><br></pre></td></tr></table></figure>
-<p>此时的commit对象已经有parent信息了，这样我们就可以顺着parent一步步往回进行版本回退了。不过这样是比较麻烦的，我们一般习惯用的是git log查看提交记录。</p>
-<h4 id="refs目录"><a href="#refs目录" class="headerlink" title="refs目录"></a>refs目录</h4><p>在介绍refs目录之前，我们还是先来看一下该目录结构</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ tree .git/refs/</span><br><span class="line">.git/refs/</span><br><span class="line">├── heads</span><br><span class="line">│   └── master</span><br><span class="line">└── tags</span><br><span class="line"></span><br><span class="line">2 directories, 1 file</span><br><span class="line">$ cat .git/refs/heads/master </span><br><span class="line">5333a759c4bdcdc6095b4caac19743d9445ca516</span><br></pre></td></tr></table></figure>
-<p>在一个刚刚被初始化的Git仓库中，refs目录下只有heads和tags两个子目录，由于我们刚刚有过提交操作，所以git为我们自动生成了一个名为master的引用。master的内容是最后一次提交对象的Hash值。看到这里大家一定在想，如果我们对每次提交都创建一个这样的引用，不就不需要记住每次提交的Hash值了，只要看看引用的值，复制过来就可以退回到对应版本了。没错，这样是可以方便的退回，但是这样做的意义不大，因为我们并不需要频繁的退回，特别是比较古老的版本，退回的概率更是趋近于0。Git用这个引用做了更有意义的事，那就是分支。</p>
-<p>当我新建一个分支时，git就会在.git/refs/heads目录下新建一个文件。当然新建的引用还是指向当前工作目录的最后一次提交，一般情况下我们不会主动去修改这些引用文件，不过如果一定要修改，Git为我们提供了一个update-ref命令。可以改变引用的值，使其指向不同的commit对象。</p>
-<p>tags目录下的文件存储的是标签对应的commit，当为某次提交打上一个tag时，tags目录下就会被创建出一个命名为tag名的文件，值是此次提交的Hash值。</p>
-<h4 id="HEAD"><a href="#HEAD" class="headerlink" title="HEAD"></a>HEAD</h4><p>新建分支的时候，Git是怎么知道我们当前是在哪个分支的，Git又是如何实现分支切换的呢？答案就在HEAD这个文件中。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cat .git/HEAD </span><br><span class="line">ref: refs/heads/master</span><br><span class="line">$ git checkout <span class="built_in">test</span> </span><br><span class="line">Switched to branch <span class="string">'test'</span></span><br><span class="line">$ cat .git/HEAD </span><br><span class="line">ref: refs/heads/<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
-<p>很明显，HEAD文件存储的就是我们当前分支的引用，当我们切换分支后再次进行提交操作时，Git就会读取HEAD对应引用的值，作为此次commit的parent。我们也可以通过symbolic-ref命令手动设置HEAD的值，但是不能设置refs以外的形式。</p>
-<h4 id="Packfiles"><a href="#Packfiles" class="headerlink" title="Packfiles"></a>Packfiles</h4><p>到这里我们在文章开头所说的重点关注的目录和文件都介绍完毕了。但是作为一个文件系统，还存在一个问题，那就是空间。前文介绍过，当文件修改后进行提交时，Git会创建一份新的快照。这样长久下去，必定会占用很大的存储空间。而比较古老的版本的价值已经不大，所以要想办法清理出足够的空间供用户使用。</p>
-<p>好消息是，Git拥有自己的gc（垃圾回收）方法。当仓库中有太多松散对象时，Git会调用git gc命令（当然我们也可以手动调用这个命令），将这些对象进行打包。打包后会出现两个新文件：一个idx索引文件和一个pack文件。索引文件包含了packfile的偏移信息，可以快速定位到文件。打包后，每个文件最新的版本的对象存的是完整的文件内容。而之前的版本只保存差异。这样就达到了压缩空间的目的。</p>
-<h4 id="Ending"><a href="#Ending" class="headerlink" title="Ending"></a>Ending</h4><p>本文只介绍了Git的原理，如果对Git基本操作不熟悉的话，可以看看<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">Pro Git</a>。</p>
+        <p>在实际项目中，我们常常需要把两个相似的对象相互转换，其目的是在对外提供数据时需要将一部分敏感数据（例如：密码、加密token等）隐藏起来。最普通的方法是，新建一个对象，将需要的值逐个set进去。如果有多组需要这样转换的对象，那么就需要做很多只是get/set这样无意义的工作。<a id="more"></a></p>
+<p>在这样的背景下，ModelMapper诞生了，它是一个简单、高效、智能的对象映射工具。它的使用非常简单，首先添加maven依赖</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.modelmapper&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;modelmapper&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;2.1.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>然后就可以直接new出一个ModelMapper对象，并且调用其map方法将指定对象的值映射到另一个对象上了。</p>
+<p>使用方法今天不做过多介绍，大家可以自行Google，找到ModelMapper的相关文档进行学习。今天要分享的时前几天无意间踩到的一个坑。我有两个类，PostDO和PostVO（这里只截取了部分字段，因此两个类的含义也不做解释了）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PostDO</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line">    <span class="keyword">private</span> String commentId;</span><br><span class="line">    <span class="keyword">private</span> Long postId;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> likeNum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PostVO</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> like;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> likeNum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在一个方法中，我试图将PostDO的一个对象映射到PostVO，因此我进行如下操作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ModelMapper modelMapper = <span class="keyword">new</span> ModelMapper();</span><br><span class="line">        PostDO postDO = PostDO.builder().id(<span class="number">3L</span>).likeNum(<span class="number">0</span>).build();</span><br><span class="line">        PostVO postVO = modelMapper.map(postDO, PostVO.class);</span><br><span class="line">        System.out.println(postVO);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行结果是这样的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PostVO(id=<span class="number">3</span>, like=<span class="keyword">false</span>, likeNum=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>无异常，项目中likeNum字段的值是随着项目的进行递增的。当likeNum增加到2时，异常出现了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread <span class="string">"main"</span> org.modelmapper.MappingException: ModelMapper mapping errors:</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>) Converter org.modelmapper.internal.converter.BooleanConverter@<span class="number">497470</span>ed failed to convert <span class="keyword">int</span> to <span class="keyword">boolean</span>.</span><br><span class="line"></span><br><span class="line"><span class="number">1</span> error</span><br><span class="line">	at org.modelmapper.internal.Errors.throwMappingExceptionIfErrorsExist(Errors.java:<span class="number">380</span>)</span><br><span class="line">	at org.modelmapper.internal.MappingEngineImpl.map(MappingEngineImpl.java:<span class="number">79</span>)</span><br><span class="line">	at org.modelmapper.ModelMapper.mapInternal(ModelMapper.java:<span class="number">554</span>)</span><br><span class="line">	at org.modelmapper.ModelMapper.map(ModelMapper.java:<span class="number">387</span>)</span><br><span class="line">	at Application.main(Application.java:<span class="number">7</span>)</span><br><span class="line">Caused by: org.modelmapper.MappingException: ModelMapper mapping errors:</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>) Error mapping <span class="number">2</span> to <span class="keyword">boolean</span></span><br><span class="line"></span><br><span class="line"><span class="number">1</span> error</span><br><span class="line">	at org.modelmapper.internal.Errors.toMappingException(Errors.java:<span class="number">258</span>)</span><br><span class="line">	at org.modelmapper.internal.converter.BooleanConverter.convert(BooleanConverter.java:<span class="number">49</span>)</span><br><span class="line">	at org.modelmapper.internal.converter.BooleanConverter.convert(BooleanConverter.java:<span class="number">27</span>)</span><br><span class="line">	at org.modelmapper.internal.MappingEngineImpl.convert(MappingEngineImpl.java:<span class="number">298</span>)</span><br><span class="line">	at org.modelmapper.internal.MappingEngineImpl.map(MappingEngineImpl.java:<span class="number">108</span>)</span><br><span class="line">	at org.modelmapper.internal.MappingEngineImpl.setDestinationValue(MappingEngineImpl.java:<span class="number">238</span>)</span><br><span class="line">	at org.modelmapper.internal.MappingEngineImpl.propertyMap(MappingEngineImpl.java:<span class="number">184</span>)</span><br><span class="line">	at org.modelmapper.internal.MappingEngineImpl.typeMap(MappingEngineImpl.java:<span class="number">148</span>)</span><br><span class="line">	at org.modelmapper.internal.MappingEngineImpl.map(MappingEngineImpl.java:<span class="number">113</span>)</span><br><span class="line">	at org.modelmapper.internal.MappingEngineImpl.map(MappingEngineImpl.java:<span class="number">70</span>)</span><br><span class="line">	... <span class="number">3</span> more</span><br></pre></td></tr></table></figure>
+<p>提示int类型不能转换成boolean型，很明显。ModelMapper是将like字段映射到likeNum了。那么ModelMapper究竟是怎样进行映射的呢，我们一起来看一下ModelMapper的源码。</p>
+<p>ModelMapper利用反射机制，获取到目标类的字段，并生成期望匹配的键值对，类似于这样。</p>
+<p><img src="https://res.cloudinary.com/dxydgihag/image/upload/v1536677296/Blog/ModelMapper/ModelMapper1.png" alt="键值对"></p>
+<p>接着对这些键值对进行遍历，逐个寻找源类中可以匹配的字段。首先会根据目标字段判断是否存在对应的映射，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Mapping existingMapping = <span class="keyword">this</span>.typeMap.mappingFor(destPath);</span><br><span class="line"><span class="keyword">if</span> (existingMapping == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.matchSource(<span class="keyword">this</span>.sourceTypeInfo, mutator);</span><br><span class="line">    <span class="keyword">this</span>.propertyNameInfo.clearSource();</span><br><span class="line">    <span class="keyword">this</span>.sourceTypes.clear();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果不存在，就调用matchSource方法，在源类中根据匹配规则寻找可以匹配的字段。匹配过程中，首先会判断目标字段的类型是否在类型列表中存在，如果存在，则可以根据名称，加入匹配的mappings中。如果不存在，则需要判断converterStore中是否存在能够应用于该字段的转换器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">this</span>.destinationTypes.contains(destinationMutator.getType())) &#123;</span><br><span class="line">    <span class="keyword">this</span>.mappings.add(<span class="keyword">new</span> PropertyMappingImpl(<span class="keyword">this</span>.propertyNameInfo.getSourceProperties(), <span class="keyword">this</span>.propertyNameInfo.getDestinationProperties(), <span class="keyword">true</span>));</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    TypeMap&lt;?, ?&gt; propertyTypeMap = <span class="keyword">this</span>.typeMapStore.get(accessor.getType(), destinationMutator.getType(), (String)<span class="keyword">null</span>);</span><br><span class="line">    PropertyMappingImpl mapping = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (propertyTypeMap != <span class="keyword">null</span>) &#123;</span><br><span class="line">        Converter&lt;?, ?&gt; propertyConverter = propertyTypeMap.getConverter();</span><br><span class="line">        <span class="keyword">if</span> (propertyConverter == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.mergeMappings(propertyTypeMap);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.mappings.add(<span class="keyword">new</span> PropertyMappingImpl(<span class="keyword">this</span>.propertyNameInfo.getSourceProperties(), <span class="keyword">this</span>.propertyNameInfo.getDestinationProperties(), propertyTypeMap.getProvider(), propertyConverter));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        doneMatching = <span class="keyword">this</span>.matchingStrategy.isExact();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        Iterator var9 = <span class="keyword">this</span>.converterStore.getConverters().iterator();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(var9.hasNext()) &#123;</span><br><span class="line">            ConditionalConverter&lt;?, ?&gt; converter = (ConditionalConverter)var9.next();</span><br><span class="line">            MatchResult matchResult = converter.match(accessor.getType(), destinationMutator.getType());</span><br><span class="line">            <span class="keyword">if</span> (!MatchResult.NONE.equals(matchResult)) &#123;</span><br><span class="line">                mapping = <span class="keyword">new</span> PropertyMappingImpl(<span class="keyword">this</span>.propertyNameInfo.getSourceProperties(), <span class="keyword">this</span>.propertyNameInfo.getDestinationProperties(), <span class="keyword">false</span>);</span><br><span class="line">                <span class="keyword">if</span> (MatchResult.FULL.equals(matchResult)) &#123;</span><br><span class="line">                    <span class="keyword">this</span>.mappings.add(mapping);</span><br><span class="line">                    doneMatching = <span class="keyword">this</span>.matchingStrategy.isExact();</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (!<span class="keyword">this</span>.configuration.isFullTypeMatchingRequired()) &#123;</span><br><span class="line">                    <span class="keyword">this</span>.partiallyMatchedMappings.add(mapping);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (mapping == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">this</span>.intermediateMappings.put(accessor, <span class="keyword">new</span> PropertyMappingImpl(<span class="keyword">this</span>.propertyNameInfo.getSourceProperties(), <span class="keyword">this</span>.propertyNameInfo.getDestinationProperties(), <span class="keyword">false</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>默认的转换器有11中：</p>
+<p><img src="https://res.cloudinary.com/dxydgihag/image/upload/v1536678691/Blog/ModelMapper/ModelMapper2.png" alt="转换器"></p>
+<p>找到对应的converter后，converter的map方法返回一个MatchResult，MatchResult有三种结果：FULL、PARTIAL和NONE（即全部匹配，部分匹配和不匹配）。注意，这里有一个部分匹配，也就是我所踩到的坑，在对like进行匹配是，likeNum就被定义为部分匹配。因此，当likeNum大于2时，就不能被转换成boolean类型。</p>
+<p>这里解决方法有两种，一种是在设置中，规定必须字段名完全匹配；另一种就是将匹配策略定义为严格。</p>
+<p>设置方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">modelMapper.getConfiguration().setFullTypeMatchingRequired(<span class="keyword">true</span>);</span><br><span class="line">modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);</span><br></pre></td></tr></table></figure>
+<p>到这里，ModelMapper会选出较为合适的源字段，但是如果匹配要求不高的话，ModelMapper可能会筛选出多个符合条件的字段，因此，还需要进一步过滤。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PropertyMappingImpl mapping;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">this</span>.mappings.size() == <span class="number">1</span>) &#123;</span><br><span class="line">    mapping = (PropertyMappingImpl)<span class="keyword">this</span>.mappings.get(<span class="number">0</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    mapping = <span class="keyword">this</span>.disambiguateMappings();</span><br><span class="line">    <span class="keyword">if</span> (mapping == <span class="keyword">null</span> &amp;&amp; !<span class="keyword">this</span>.configuration.isAmbiguityIgnored()) &#123;</span><br><span class="line">        <span class="keyword">this</span>.errors.ambiguousDestination(<span class="keyword">this</span>.mappings);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们看到，如果匹配到的结果只有1个，那么就返回这个结果；如果有多个，则会调用disambiguateMappings方法，去掉有歧义的结果。我们来看一下这个方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> PropertyMappingImpl <span class="title">disambiguateMappings</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    List&lt;ImplicitMappingBuilder.WeightPropertyMappingImpl&gt; weightMappings = <span class="keyword">new</span> ArrayList(<span class="keyword">this</span>.mappings.size());</span><br><span class="line">    Iterator var2 = <span class="keyword">this</span>.mappings.iterator();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(var2.hasNext()) &#123;</span><br><span class="line">        PropertyMappingImpl mapping = (PropertyMappingImpl)var2.next();</span><br><span class="line">        ImplicitMappingBuilder.SourceTokensMatcher matcher = <span class="keyword">this</span>.createSourceTokensMatcher(mapping);</span><br><span class="line">        ImplicitMappingBuilder.DestTokenIterator destTokenIterator = <span class="keyword">new</span> ImplicitMappingBuilder.DestTokenIterator(mapping);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(destTokenIterator.hasNext()) &#123;</span><br><span class="line">            matcher.match(destTokenIterator.next());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">double</span> matchRatio = (<span class="keyword">double</span>)matcher.matches() / ((<span class="keyword">double</span>)matcher.total() + (<span class="keyword">double</span>)destTokenIterator.total());</span><br><span class="line">        weightMappings.add(<span class="keyword">new</span> ImplicitMappingBuilder.WeightPropertyMappingImpl(mapping, matchRatio));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Collections.sort(weightMappings);</span><br><span class="line">    <span class="keyword">if</span> (((ImplicitMappingBuilder.WeightPropertyMappingImpl)weightMappings.get(<span class="number">0</span>)).ratio == ((ImplicitMappingBuilder.WeightPropertyMappingImpl)weightMappings.get(<span class="number">1</span>)).ratio) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ((ImplicitMappingBuilder.WeightPropertyMappingImpl)weightMappings.get(<span class="number">0</span>)).mapping;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ModelMapper定义了一个权重，来判断源字段是否有歧义，这里根据驼峰式的规则（也可以设置为下划线），将源和目标字段名称进行拆分，根据 匹配数量/源token数+目标token数，得到一个匹配的比率，比率越大，说明匹配度越高。最终取得匹配权重最大的那个字段。其他字段被认为是有歧义的。</p>
+<p>截至目前，默认的ModelMapper的map方法的工作原理已经介绍完了，中间可能有些遗漏的细节，或者哪里有说的不明白的地方，欢迎大家和我一起讨论。大家在用到ModelMapper时一定要注意字段名，如果有相近的字段名，必须认真核对匹配是否正确，必要时就采用严格匹配策略。</p>
 
       
     </div>
@@ -470,7 +464,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/git/" rel="tag"><i class="fa fa-tag"></i> git</a>
+            <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
           
         </div>
       
@@ -483,8 +477,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/05/Hello-Hexo/" rel="next" title="Hello Hexo!">
-                <i class="fa fa-chevron-left"></i> Hello Hexo!
+              <a href="/2018/09/08/代码洁癖系列（八）：迭代的原则/" rel="next" title="代码洁癖系列（八）：迭代的原则">
+                <i class="fa fa-chevron-left"></i> 代码洁癖系列（八）：迭代的原则
               </a>
             
           </div>
@@ -492,10 +486,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/20/volatile-vs-synchronized/" rel="prev" title="volatile vs synchronized">
-                volatile vs synchronized <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -553,17 +543,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -642,22 +623,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#objects目录"><span class="nav-number">1.</span> <span class="nav-text">objects目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#refs目录"><span class="nav-number">2.</span> <span class="nav-text">refs目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HEAD"><span class="nav-number">3.</span> <span class="nav-text">HEAD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Packfiles"><span class="nav-number">4.</span> <span class="nav-text">Packfiles</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ending"><span class="nav-number">5.</span> <span class="nav-text">Ending</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
